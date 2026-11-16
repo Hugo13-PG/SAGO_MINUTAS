@@ -67,6 +67,8 @@ paths:
                     $ref: "#/components/schemas/Usuario"
         "400":
           $ref: "#/components/responses/ValidationError"
+        "413":
+          $ref: "#/components/responses/PayloadTooLarge"
         "401":
           $ref: "#/components/responses/Unauthorized"
         "403":
@@ -153,12 +155,18 @@ components:
           properties:
             code:
               type: string
-              enum: [VALIDATION_ERROR, UNAUTHORIZED, FORBIDDEN, NOT_FOUND, INTERNAL_ERROR]
+              enum: [VALIDATION_ERROR, UNAUTHORIZED, FORBIDDEN, NOT_FOUND, INTERNAL_ERROR, NOT_IMPLEMENTED, PAYLOAD_TOO_LARGE]
             message:
               type: string
   responses:
     ValidationError:
       description: Datos de entrada inválidos
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+    PayloadTooLarge:
+      description: El cuerpo de la peticion excede el tamano permitido
       content:
         application/json:
           schema:
