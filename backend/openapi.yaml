@@ -10,3 +10,9 @@ servers:
     description: Desarrollo local
   - url: https://sago-api.onrender.com
     description: Producción
+  tags:
+  - name: Health
+    description: Estado del servicio
+  - name: Auth
+    description: Identidad y perfiles
+
