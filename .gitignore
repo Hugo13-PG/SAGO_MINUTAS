@@ -13,3 +13,17 @@
 .externalNativeBuild
 .cxx
 local.properties
+
+# Secretos y credenciales (nunca versionar)
+.env
+.env.*
+!.env.example
+*.jks
+*.keystore
+*.p12
+serviceAccount*.json
+firebase-adminsdk*.json
+
+# Dependencias y artefactos web
+node_modules/
+dist/
