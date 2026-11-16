@@ -1,0 +1,12 @@
+openapi: 3.0.3
+info:
+  title: SAGO Minutas API
+  version: 0.1.0
+  description: |
+    API REST de SAGO Minutas.
+    Fase 1: identidad (health + Google Sign-In).
+servers:
+  - url: http://localhost:3000
+    description: Desarrollo local
+  - url: https://sago-api.onrender.com
+    description: Producción
