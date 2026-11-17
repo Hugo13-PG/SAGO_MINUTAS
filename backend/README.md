@@ -7,7 +7,7 @@ Los endpoints de autenticación están definidos como *stubs* y responden `501 N
 
 ## Requisitos
 
-- **Node.js** >= 20
+- **Node.js** >= 22 (lo exige `firebase-admin` 14.x)
 - **npm**
 - (Opcional) **Docker** para build/ejecución en contenedor
 
