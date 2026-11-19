@@ -1,16 +1,9 @@
 import { Router } from "express";
-import { HttpError } from "../middlewares/error";
+import { requiereAuth } from "../middlewares/auth";
+import { authController } from "./auth.controller";
 
 export const authRouter: Router = Router();
 
-authRouter.post("/google", () => {
-  throw new HttpError(
-    501,
-    "NOT_IMPLEMENTED",
-    "POST /api/v1/auth/google se implementa en el WP2"
-  );
-});
+authRouter.post("/google", authController.loginConGoogle);
 
-authRouter.get("/me", () => {
-  throw new HttpError(501, "NOT_IMPLEMENTED", "GET /api/v1/auth/me se implementa en el WP2");
-});
+authRouter.get("/me", requiereAuth, authController.miPerfil);

@@ -97,6 +97,8 @@ paths:
           $ref: "#/components/responses/Unauthorized"
         "403":
           $ref: "#/components/responses/Forbidden"
+        "404":
+          $ref: "#/components/responses/NotFound"  
         "500":
           $ref: "#/components/responses/InternalError"
 components:
@@ -183,9 +185,16 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/Error"
+    NotFound:
+      description: El recurso solicitado no existe
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"        
     InternalError:
       description: Error inesperado del servidor
       content:
         application/json:
           schema:
             $ref: "#/components/schemas/Error"
+            
