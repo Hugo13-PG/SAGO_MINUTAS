@@ -11,11 +11,10 @@ describe("GET /health", () => {
     expect(res.status).toBe(200);
     expect(res.headers["content-type"]).toMatch(/application\/json/);
     expect(res.body).toEqual({
-            status: "ok",
-            uptime: expect.any(Number),
-            timestamp: expect.any(String),
-});
-expect(new Date(res.body.timestamp).toString()).not.toBe("Invalid Date");;
+      status: "ok",
+      uptime: expect.any(Number),
+      timestamp: expect.any(String),
+    });
     expect(new Date(res.body.timestamp).toString()).not.toBe("Invalid Date");
   });
 });
@@ -72,13 +71,46 @@ describe("Errores de body", () => {
     });
   });
 
-  it("body bajo el limite llega al router (501 NOT_IMPLEMENTED)", async () => {
+  it("body bajo el limite llega al router (401 por token invalido, no 500)", async () => {
     const res = await request(app)
       .post("/api/v1/auth/google")
-      .send({ idToken: "x" });
+      .send({ idToken: "token-falso" });
 
-    expect(res.status).toBe(501);
-    expect(res.body.error.code).toBe("NOT_IMPLEMENTED");
+    expect(res.status).toBe(401);
+    expect(res.body.error.code).toBe("UNAUTHORIZED");
+  });
+});
+
+describe("GET /api/v1/auth/me", () => {
+  it("sin cabecera Authorization responde 401 UNAUTHORIZED", async () => {
+    const res = await request(app).get("/api/v1/auth/me");
+
+    expect(res.status).toBe(401);
+    expect(res.body).toEqual({
+      error: {
+        code: "UNAUTHORIZED",
+        message: "Token de autorizacion ausente",
+      },
+    });
+  });
+
+  it("con un esquema distinto de Bearer responde 401 sin tocar Firebase", async () => {
+    const res = await request(app)
+      .get("/api/v1/auth/me")
+      .set("Authorization", "Basic abc123");
+
+    expect(res.status).toBe(401);
+    expect(res.body.error.message).toBe("Token de autorizacion ausente");
+  });
+
+  it("con Bearer y token invalido responde 401 (no 500)", async () => {
+    const res = await request(app)
+      .get("/api/v1/auth/me")
+      .set("Authorization", "Bearer token-falso");
+
+    expect(res.status).toBe(401);
+    expect(res.body.error.code).toBe("UNAUTHORIZED");
+    expect(res.body.error.message).toBe("Token invalido o expirado");
   });
 });
 
